@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VADDI CALCULATOR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+    }
+    .calculator {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background: #e6ffe6;
+      border-radius: 5px;
+    }
+    .highlight {
+      font-size: 18px;
+      font-weight: bold;
+      color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <h2>VADDI CALCULATOR</h2>
+  <div class="calculator">
+    <label>Amount Borrowed (in ₹):
+      <input type="number" id="amount" placeholder="Enter amount" />
+    </label><label>Interest (e.g., 2 for ₹2 per ₹100 per month):
+  <input type="number" step="0.01" id="rate" placeholder="Enter rate" />
+</label>
+
+<label>Start Date:
+  <input type="date" id="startDate" />
+</label>
+
+<label>End Date:
+  <input type="date" id="endDate" />
+</label>
+
+<button onclick="calculateInterest()">Calculate Interest</button>
+
+<div class="result" id="result"></div>
+
+  </div>  <script>
+    function calculateInterest() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const rate = parseFloat(document.getElementById("rate").value);
+      const startDate = new Date(document.getElementById("startDate").value);
+      const endDate = new Date(document.getElementById("endDate").value);
+
+      if (isNaN(amount) || isNaN(rate) || !startDate || !endDate || endDate < startDate) {
+        document.getElementById("result").innerText = "Please enter valid inputs.";
+        return;
+      }
+
+      const msInDay = 1000 * 60 * 60 * 24;
+      const totalDays = Math.floor((endDate - startDate) / msInDay);
+      const years = Math.floor(totalDays / 365);
+      const remainingDaysAfterYears = totalDays % 365;
+      const months = Math.floor(remainingDaysAfterYears / 30.44);
+      const remainingDays = Math.floor(remainingDaysAfterYears % 30.44);
+      const totalMonths = (years * 12) + months;
+
+      const interestPerMonth = (rate / 100) * amount;
+      const totalInterest = interestPerMonth * (totalMonths + remainingDays / 30.44);
+      const totalRepayment = amount + totalInterest;
+
+      document.getElementById("result").innerHTML =
+        `<strong>Results:</strong><br>
+        Total Duration: ${years} years ${months} months ${remainingDays} days<br>
+        Total Months: ${totalMonths} months ${remainingDays} days<br>
+        Total Days: ${totalDays} days<br>
+        Interest per Month: ₹${interestPerMonth.toFixed(2)}<br>
+        <span class="highlight">Total Interest: ₹${totalInterest.toFixed(2)}</span><br>
+        Total Repayment: ₹${totalRepayment.toFixed(2)}`;
+    }
+   <p><h1> all rights reserved by sandeep</p>
+  </script></body>
+</html>
